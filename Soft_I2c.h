@@ -1,7 +1,7 @@
 #ifndef __I2C_H_
 #define __I2C_H_
 
-#include <stdint.h>
+#include "stm8l15x.h"
 
 typedef void (*write_sda_h)(void);
 typedef void (*write_sda_l)(void);
