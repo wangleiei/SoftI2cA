@@ -28,7 +28,7 @@ void soft_I2C_init(SOFT_I2C_STR* base,
  	base->set_sda_pp_static = set_sda_pp_;
  	base->set_sda_in_static = set_sda_in_;
 }
-static void I2C_start(SOFT_I2C_STR*base)
+static oid I2C_start(SOFT_I2C_STR*base)
 {	
 	
 	base->write_scl_l_static();
@@ -119,7 +119,8 @@ uint8_t I2C_SendByte(SOFT_I2C_STR*base,uint8_t SendByte)
 	base->delayus_static(5);	
 	
 	base->write_scl_h_static();
-	
+
+	base->delayus_static(base->i2c_rate);	
 	status = 0;	
 	
 	count = 100;	
