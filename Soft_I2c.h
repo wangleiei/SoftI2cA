@@ -1,38 +1,35 @@
 #ifndef __I2C_H_
 #define __I2C_H_
 
-#include "stm8l15x.h"
+#include "stm32f722xx.h"
 
-typedef void (*write_sda_h)(void);
-typedef void (*write_sda_l)(void);
-typedef void (*write_scl_h)(void);
-typedef void (*write_scl_l)(void);
-typedef void (*set_sda_pp)(void);
-typedef void (*set_sda_in)(void);
-typedef int (*read_sda)(void);
-typedef void (*delayus)(int);
+typedef void (*VOIDFUNC)(void);
+typedef int (*INTFPTR)(void);
+typedef void (*FUNPTRINT)(int);
 typedef struct SOFT_I2C1
 {		
-	write_sda_h  write_sda_h_static;  
-	write_sda_l  write_sda_l_static;  
-	write_scl_h  write_scl_h_static;  
-	write_scl_l  write_scl_l_static;  
-	read_sda  read_sda_static;  
+	VOIDFUNC  write_sda_h_static;  
+	VOIDFUNC  write_sda_l_static;  
+	VOIDFUNC  write_scl_h_static;  
+	VOIDFUNC  write_scl_l_static;  
+	INTFPTR  read_sda_static;  
 	uint8_t i2c_rate;
-	delayus  delayus_static;
-	set_sda_pp  set_sda_pp_static;
-	set_sda_in  set_sda_in_static;
+	FUNPTRINT  delayus_static;
+	VOIDFUNC  set_sda_pp_static;
+	VOIDFUNC  set_sda_in_static;
+	VOIDFUNC  set_scl_pp_static;
 }SOFT_I2C_STR;
 
 void soft_I2C_init(SOFT_I2C_STR* base,
-	write_sda_h  w_sda_h,//sda输出高电平
-	write_sda_l  w_sda_l,//sda输出低电平
-	write_scl_h  w_scl_h,//scl输出高电平
-	write_scl_l  w_scl_l,//scl输出低电平
-	read_sda  r_sda,//读取sda电平高低，高电平返回1，低电平返回0
-	set_sda_pp  set_sda_pp_,//设置sda为输出模式
-	set_sda_in  set_sda_in_,//设置scl为输入模式
-	delayus  delayus_,//模拟延时
+	VOIDFUNC  w_sda_h,//sda输出高电平
+	VOIDFUNC  w_sda_l,//sda输出低电平
+	VOIDFUNC  w_scl_h,//scl输出高电平
+	VOIDFUNC  w_scl_l,//scl输出低电平
+	INTFPTR  r_sda,//读取sda电平高低，高电平返回1，低电平返回0
+	VOIDFUNC  set_sda_pp_,//设置sda为输出模式
+	VOIDFUNC  set_sda_in_,//设置scl为输入模式
+	VOIDFUNC  set_scl_pp_,//设置scl为输入模式
+	FUNPTRINT  delayus_,//模拟延时
 	uint8_t count//延时单位，用来控制i2c通信速率
 	);
 // 返回0 发送成功，返回1发送失败
