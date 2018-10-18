@@ -16,7 +16,7 @@ void soft_I2C_init(SOFT_I2C_STR* base,
 	VOIDFUNC  set_sda_in_,//设置scl为输入模式
 	VOIDFUNC  set_scl_pp_,//设置scl为输入模式
 	FUNPTRINT  delayus_,//模拟延时
-	uint8_t count//延时单位，用来控制i2c通信速率
+	uint32_t count//延时单位，用来控制i2c通信速率
 	)
 {
  	base->write_sda_h_static = w_sda_h;
