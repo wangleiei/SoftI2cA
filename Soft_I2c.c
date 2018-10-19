@@ -182,13 +182,10 @@ uint8_t I2C_ReceiveByte(SOFT_I2C_STR*base)
 static uint8_t  I2C_SendAddr(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t SubaNum)
 {
 	I2CAddr<<=1;
-	if(SubaNum==SUBA1X)		
-	{
-		I2C_SendByte(base,I2CAddr | ((RegAddr>>8)<<1));
-	}
-	else
-	{
-		I2C_SendByte(base,I2CAddr);	
+	I2CAddr&=0xFE;
+	I2C_SendByte(base,I2CAddr);
+
+	if(SubaNum != 1){
 		I2C_SendByte(base,(uint8_t)(RegAddr>>8));			
 	}
 
@@ -226,6 +223,7 @@ uint8_t I2C_WriteNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8
 }
 uint8_t I2C_ReadNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum)
 {	
+
 	uint8_t status;
 
 	I2C_start(base);
@@ -235,17 +233,9 @@ uint8_t I2C_ReadNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_
 	I2C_start(base);							
 	
 	I2CAddr<<=1;
-	if(SubaNum==SUBA1X)
-	{
-		status = I2C_SendByte(base,(I2CAddr|0x01) + ((RegAddr>>8)<<1));		
-	}
-	else
-	{
-		status = I2C_SendByte(base,I2CAddr|0x01);			
-	}
+	status = I2C_SendByte(base,I2CAddr|0x01);
 
-	while(length != 0x00)
-	{
+	while(length != 0x00){
 		*(uint8_t*)pBuffer = I2C_ReceiveByte(base);
 		if(length != 1)	
 		{

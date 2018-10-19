@@ -1,7 +1,7 @@
 #ifndef __I2C_H_
 #define __I2C_H_
 
-#include "stm32f722xx.h"
+#include <stdint.h>
 
 typedef void (*VOIDFUNC)(void);
 typedef int (*INTFPTR)(void);
