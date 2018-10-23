@@ -17,7 +17,7 @@ typedef struct SOFT_I2C1
 	VOIDFUNC  set_sda_in_static;//设置scl为输入模式
 	VOIDFUNC  set_scl_pp_static;//设置scl为输入模式
 	FUNPTRINT  delayus_static;//模拟延时
-	uint8_t i2c_rate;//延时单位，用来控制i2c通信速率
+	uint32_t i2c_rate;//延时单位，用来控制i2c通信速率
 }SoftI2cA ;
 /**********************************************************************************************************
 *	函 数 名: void Softi2cA_Init(SoftI2cA * base)
