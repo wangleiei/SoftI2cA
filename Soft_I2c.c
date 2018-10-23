@@ -10,7 +10,7 @@ void Softi2cA_Init(SoftI2cA* base)
 {
 
  	if((0 == base->set_sda_pp_static) || (0 == base->set_scl_pp_static)){
- 		return
+ 		return;
 	}
 
 	base->set_sda_pp_static();
