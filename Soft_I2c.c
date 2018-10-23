@@ -6,29 +6,12 @@ static void I2C_stop(SoftI2cA*base);
 static void I2C_Nack(SoftI2cA*base);
 static void I2C_ack(SoftI2cA*base);
 
-void soft_I2C_init(SoftI2cA* base,
-	VOIDFUNC  w_sda_h,//sda输出高电平
-	VOIDFUNC  w_sda_l,//sda输出低电平
-	VOIDFUNC  w_scl_h,//scl输出高电平
-	VOIDFUNC  w_scl_l,//scl输出低电平
-	INTFPTR  r_sda,//读取sda电平高低，高电平返回1，低电平返回0
-	VOIDFUNC  set_sda_pp_,//设置sda为输出模式
-	VOIDFUNC  set_sda_in_,//设置scl为输入模式
-	VOIDFUNC  set_scl_pp_,//设置scl为输入模式
-	FUNPTRINT  delayus_,//模拟延时
-	uint32_t count//延时单位，用来控制i2c通信速率
-	)
+void Softi2cA_Init(SoftI2cA* base)
 {
- 	base->write_sda_h_static = w_sda_h;
- 	base->write_sda_l_static = w_sda_l;
- 	base->write_scl_h_static = w_scl_h;
- 	base->write_scl_l_static = w_scl_l;
- 	base->read_sda_static = r_sda;
- 	base->delayus_static = delayus_;
- 	base->i2c_rate = count;
- 	base->set_sda_pp_static = set_sda_pp_;
- 	base->set_sda_in_static = set_sda_in_;
- 	base->set_scl_pp_static = set_scl_pp_;
+
+ 	if((0 == base->set_sda_pp_static) || (0 == base->set_scl_pp_static)){
+ 		return
+	}
 
 	base->set_sda_pp_static();
 	base->set_scl_pp_static();

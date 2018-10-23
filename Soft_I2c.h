@@ -8,30 +8,19 @@ typedef int (*INTFPTR)(void);
 typedef void (*FUNPTRINT)(int);
 typedef struct SOFT_I2C1
 {		
-	VOIDFUNC  write_sda_h_static;  
-	VOIDFUNC  write_sda_l_static;  
-	VOIDFUNC  write_scl_h_static;  
-	VOIDFUNC  write_scl_l_static;  
-	INTFPTR  read_sda_static;  
-	uint8_t i2c_rate;
-	FUNPTRINT  delayus_static;
-	VOIDFUNC  set_sda_pp_static;
-	VOIDFUNC  set_sda_in_static;
-	VOIDFUNC  set_scl_pp_static;
+	VOIDFUNC  write_sda_h_static;  //sda输出高电平
+	VOIDFUNC  write_sda_l_static;  //sda输出低电平
+	VOIDFUNC  write_scl_h_static;  //scl输出高电平
+	VOIDFUNC  write_scl_l_static;  //scl输出低电平
+	INTFPTR  read_sda_static;  //读取sda电平高低，高电平返回1，低电平返回0
+	VOIDFUNC  set_sda_pp_static;//设置sda为输出模式
+	VOIDFUNC  set_sda_in_static;//设置scl为输入模式
+	VOIDFUNC  set_scl_pp_static;//设置scl为输入模式
+	FUNPTRINT  delayus_static;//模拟延时
+	uint8_t i2c_rate;//延时单位，用来控制i2c通信速率
 }SoftI2cA ;
 
-void soft_I2C_init(SoftI2cA * base,
-	VOIDFUNC  w_sda_h,//sda输出高电平
-	VOIDFUNC  w_sda_l,//sda输出低电平
-	VOIDFUNC  w_scl_h,//scl输出高电平
-	VOIDFUNC  w_scl_l,//scl输出低电平
-	INTFPTR  r_sda,//读取sda电平高低，高电平返回1，低电平返回0
-	VOIDFUNC  set_sda_pp_,//设置sda为输出模式
-	VOIDFUNC  set_sda_in_,//设置scl为输入模式
-	VOIDFUNC  set_scl_pp_,//设置scl为输入模式
-	FUNPTRINT  delayus_,//模拟延时
-	uint32_t count//延时单位，用来控制i2c通信速率
-	);
+void Softi2cA_Init(SoftI2cA * base);
 // 返回0 发送成功，返回1发送失败
 uint8_t I2C_SendByte(SoftI2cA *base,uint8_t SendByte);
 uint8_t I2C_ReceiveByte(SoftI2cA *base);
