@@ -18,9 +18,9 @@ typedef struct SOFT_I2C1
 	VOIDFUNC  set_sda_pp_static;
 	VOIDFUNC  set_sda_in_static;
 	VOIDFUNC  set_scl_pp_static;
-}SOFT_I2C_STR;
+}SoftI2cA ;
 
-void soft_I2C_init(SOFT_I2C_STR* base,
+void soft_I2C_init(SoftI2cA * base,
 	VOIDFUNC  w_sda_h,//sda输出高电平
 	VOIDFUNC  w_sda_l,//sda输出低电平
 	VOIDFUNC  w_scl_h,//scl输出高电平
@@ -33,12 +33,12 @@ void soft_I2C_init(SOFT_I2C_STR* base,
 	uint32_t count//延时单位，用来控制i2c通信速率
 	);
 // 返回0 发送成功，返回1发送失败
-uint8_t I2C_SendByte(SOFT_I2C_STR*base,uint8_t SendByte);
-uint8_t I2C_ReceiveByte(SOFT_I2C_STR*base);
+uint8_t I2C_SendByte(SoftI2cA *base,uint8_t SendByte);
+uint8_t I2C_ReceiveByte(SoftI2cA *base);
 // SubaNum 是寄存器地址长度，分为双字节地址，单字节地址
-uint8_t I2C_WriteNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum);
+uint8_t I2C_WriteNByte(SoftI2cA *base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum);
 // SubaNum 是寄存器地址长度，分为双字节地址，单字节地址
-uint8_t I2C_ReadNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum);
+uint8_t I2C_ReadNByte(SoftI2cA *base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum);
 #define SUBA1B 	1		
 #define SUBA2B 	2		
 #define SUBA1X 	3		

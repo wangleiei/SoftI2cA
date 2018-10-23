@@ -1,12 +1,12 @@
 
 #include "Soft_I2c.h"
 
-static void I2C_start(SOFT_I2C_STR*base);
-static void I2C_stop(SOFT_I2C_STR*base);
-static void I2C_Nack(SOFT_I2C_STR*base);
-static void I2C_ack(SOFT_I2C_STR*base);
+static void I2C_start(SoftI2cA*base);
+static void I2C_stop(SoftI2cA*base);
+static void I2C_Nack(SoftI2cA*base);
+static void I2C_ack(SoftI2cA*base);
 
-void soft_I2C_init(SOFT_I2C_STR* base,
+void soft_I2C_init(SoftI2cA* base,
 	VOIDFUNC  w_sda_h,//sda输出高电平
 	VOIDFUNC  w_sda_l,//sda输出低电平
 	VOIDFUNC  w_scl_h,//scl输出高电平
@@ -33,7 +33,7 @@ void soft_I2C_init(SOFT_I2C_STR* base,
 	base->set_sda_pp_static();
 	base->set_scl_pp_static();
 }
-static void I2C_start(SOFT_I2C_STR*base)
+static void I2C_start(SoftI2cA*base)
 {	
 	
 	base->write_scl_l_static();
@@ -51,7 +51,7 @@ static void I2C_start(SOFT_I2C_STR*base)
 	base->write_scl_l_static();	
 	base->delayus_static(base->i2c_rate);
 }
-static void I2C_stop(SOFT_I2C_STR*base)
+static void I2C_stop(SoftI2cA*base)
 {
 	base->write_scl_l_static();	
 	base->delayus_static(base->i2c_rate);
@@ -65,7 +65,7 @@ static void I2C_stop(SOFT_I2C_STR*base)
 	base->write_sda_h_static();	
 	base->delayus_static(base->i2c_rate);
 }
-static void I2C_Nack(SOFT_I2C_STR*base)
+static void I2C_Nack(SoftI2cA*base)
 {
 	base->delayus_static(base->i2c_rate);
 	base->write_sda_h_static();
@@ -77,9 +77,9 @@ static void I2C_Nack(SOFT_I2C_STR*base)
 	base->write_scl_l_static();
 	base->delayus_static(base->i2c_rate);
 }
-static uint8_t I2C_SendAddr(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t SubaNum);
+static uint8_t I2C_SendAddr(SoftI2cA*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t SubaNum);
 
-static void I2C_ack(SOFT_I2C_STR*base)
+static void I2C_ack(SoftI2cA*base)
 {
 
 	base->delayus_static(base->i2c_rate);
@@ -94,7 +94,7 @@ static void I2C_ack(SOFT_I2C_STR*base)
 	base->delayus_static(base->i2c_rate);
 }
 // 返回0 发送成功，返回1发送失败
-uint8_t I2C_SendByte(SOFT_I2C_STR*base,uint8_t SendByte)
+uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte)
 {
 	uint8_t status;
 	uint16_t count;
@@ -149,7 +149,7 @@ uint8_t I2C_SendByte(SOFT_I2C_STR*base,uint8_t SendByte)
 	
 	return(status);
 }
-uint8_t I2C_ReceiveByte(SOFT_I2C_STR*base)
+uint8_t I2C_ReceiveByte(SoftI2cA*base)
 {
 
 	
@@ -179,7 +179,7 @@ uint8_t I2C_ReceiveByte(SOFT_I2C_STR*base)
 
 	return(Rdata);
 }
-static uint8_t  I2C_SendAddr(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t SubaNum)
+static uint8_t  I2C_SendAddr(SoftI2cA*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t SubaNum)
 {
 	I2CAddr<<=1;
 	I2CAddr&=0xFE;
@@ -194,7 +194,7 @@ static uint8_t  I2C_SendAddr(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr
 	return 0;
 }
 
-uint8_t I2C_WriteNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum)
+uint8_t I2C_WriteNByte(SoftI2cA*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum)
 {
 	uint8_t status;
 
@@ -221,7 +221,7 @@ uint8_t I2C_WriteNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8
 
 	return(status);
 }
-uint8_t I2C_ReadNByte(SOFT_I2C_STR*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum)
+uint8_t I2C_ReadNByte(SoftI2cA*base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum)
 {	
 
 	uint8_t status;
