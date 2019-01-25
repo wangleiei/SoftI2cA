@@ -14,35 +14,35 @@ void Softi2cA_Init(SoftI2cA* base){
 static void I2C_start(SoftI2cA*base){	
 	
 	base->write_scl_l_static();
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 
 	base->write_sda_h_static();	
 	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_h_static();
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 
 	base->write_sda_l_static();	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 
 	base->write_scl_l_static();	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 }
 static void I2C_stop(SoftI2cA*base){
 	base->write_scl_l_static();	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 
 	base->write_sda_l_static();	
 	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_h_static();
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 
 	base->write_sda_h_static();	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 }
 static void I2C_Nack(SoftI2cA*base){
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 	base->write_sda_h_static();
 	base->delayus_static(base->i2c_rate);
 
@@ -50,21 +50,21 @@ static void I2C_Nack(SoftI2cA*base){
 	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_l_static();
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 }
 
 static void I2C_ack(SoftI2cA*base){
 
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 	base->write_sda_l_static();
 	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 	base->write_scl_h_static();
 	
 	base->delayus_static(base->i2c_rate);
 	base->write_scl_l_static();
 
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 }
 // 返回0 发送成功，返回1发送失败
 uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
@@ -94,7 +94,7 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	
 	base->write_scl_h_static();
 
-	base->delayus_static(base->i2c_rate);	
+	// base->delayus_static(base->i2c_rate);	
 	status = 0;	
 
 	while((base->read_sda_static() == 1)&&(count++ <100)){
@@ -103,11 +103,11 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	
 	base->write_scl_l_static();	
 	
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 		
 	base->set_sda_pp_static();
 	
-	base->delayus_static(base->i2c_rate);		
+	// base->delayus_static(base->i2c_rate);		
 	
 	return (count > 100)?1:0;
 }
@@ -167,12 +167,12 @@ uint8_t I2C_WriteNByte(SoftI2cA*base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t 
 		RegAddr++;
 		if ((RegAddr % 16) == 0){
 			I2C_stop(base);	
-			base->delayus_static(100);
+			// base->delayus_static(100);
 			I2C_start(base);
 			status = I2C_SendAddr(base,RegAddr);
 		}
 		length --;
-		base->delayus_static(base->i2c_rate);
+		// base->delayus_static(base->i2c_rate);
 	}
 	I2C_stop(base);	
 
@@ -203,7 +203,7 @@ uint8_t I2C_ReadNByte(SoftI2cA*base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t l
 	}
 	I2C_Nack(base);
 	I2C_stop(base);
-	base->delayus_static(base->i2c_rate);
+	// base->delayus_static(base->i2c_rate);
 	return(status);
 }
 
