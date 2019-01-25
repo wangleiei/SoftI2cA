@@ -75,7 +75,6 @@ uint8_t I2C_ReceiveByte(SoftI2cA * base);
 *   说    明: 
 *********************************************************************************************************/
 uint8_t I2C_WriteNByte(SoftI2cA * base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length);
-// SubaNum 是寄存器地址长度，分为双字节地址，单字节地址
 /**********************************************************************************************************
 *	函 数 名: uint8_t I2C_ReadNByte(SoftI2cA * base,uint16_t I2CAddr,uint16_t RegAddr,uint8_t *pBuffer,uint16_t length,uint8_t SubaNum);
 *	功能说明: 

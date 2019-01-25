@@ -69,7 +69,7 @@ static void I2C_ack(SoftI2cA*base){
 // 返回0 发送成功，返回1发送失败
 uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	uint8_t status;
-	uint16_t count;
+	uint16_t count = 0;
 	
 	for(count=8; count>0;count--){
 		if((SendByte&0x80) == 0x80){
@@ -90,20 +90,15 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	}
 	base->set_sda_in_static();
 	
-	base->delayus_static(5);	
+	// base->delayus_static(5);	
 	
 	base->write_scl_h_static();
 
 	base->delayus_static(base->i2c_rate);	
 	status = 0;	
-	
-	count = 100;	
-	while(base->read_sda_static() == 1){
-		count --;
-		if(count == 0){
-			status = 1;	
-			break;
-		}
+
+	while((base->read_sda_static() == 1)&&(count++ <100)){
+		
 	}
 	
 	base->write_scl_l_static();	
@@ -114,7 +109,7 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	
 	base->delayus_static(base->i2c_rate);		
 	
-	return(status);
+	return (count > 100)?1:0;
 }
 uint8_t I2C_ReceiveByte(SoftI2cA*base){
 
@@ -124,7 +119,7 @@ uint8_t I2C_ReceiveByte(SoftI2cA*base){
 	
 	base->set_sda_in_static();
 
-	base->delayus_static(20);
+	// base->delayus_static(20);
 
 	for(count=8; count>0; count--){
 		Rdata <<= 1;
