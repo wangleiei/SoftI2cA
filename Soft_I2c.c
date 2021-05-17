@@ -10,23 +10,21 @@ static uint8_t  I2C_SendAddr(SoftI2cA*base,uint16_t RegAddr);
 void Softi2cA_Init(SoftI2cA* base){
 	base->set_sda_pp_static();
 	base->set_scl_pp_static();
+	I2C_stop(base);
 }
 static void I2C_start(SoftI2cA*base){	
 	
-	base->write_scl_l_static();
-	// base->delayus_static(base->i2c_rate);
 
 	base->write_sda_h_static();	
 	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_h_static();
-	// base->delayus_static(base->i2c_rate);
+	base->delayus_static(base->i2c_rate);
 
 	base->write_sda_l_static();	
-	// base->delayus_static(base->i2c_rate);
+	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_l_static();	
-	// base->delayus_static(base->i2c_rate);
 }
 static void I2C_stop(SoftI2cA*base){
 	base->write_scl_l_static();	
@@ -36,7 +34,7 @@ static void I2C_stop(SoftI2cA*base){
 	base->delayus_static(base->i2c_rate);
 
 	base->write_scl_h_static();
-	// base->delayus_static(base->i2c_rate);
+	base->delayus_static(base->i2c_rate);
 
 	base->write_sda_h_static();	
 	// base->delayus_static(base->i2c_rate);
@@ -89,10 +87,12 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 		// base->delayus_static(5);
 	}
 	base->set_sda_in_static();
-	
-	// base->delayus_static(5);	
+	// base->write_sda_l_static();//确保电位
+
+	base->delayus_static(base->i2c_rate);
 	
 	base->write_scl_h_static();
+	base->delayus_static(base->i2c_rate);//上升沿前的低电平时候slave给出ack
 
 	// base->delayus_static(base->i2c_rate);	
 	status = 0;	
@@ -106,8 +106,9 @@ uint8_t I2C_SendByte(SoftI2cA*base,uint8_t SendByte){
 	// base->delayus_static(base->i2c_rate);
 		
 	base->set_sda_pp_static();
-	
 	// base->delayus_static(base->i2c_rate);		
+	base->write_sda_l_static();//确保电位
+	
 	
 	return (count > 100)?1:0;
 }

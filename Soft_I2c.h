@@ -1,7 +1,7 @@
 #ifndef __I2C_H_
 #define __I2C_H_
 
-#include "stm8l15x.h"
+#include <stdint.h>
 // 如果手册上写的是bit7-bit0-->0100-001rw，则该协议需要使用地址是0X21
 typedef void (*VOIDFUNC)(void);
 typedef int (*INTFPTR)(void);
