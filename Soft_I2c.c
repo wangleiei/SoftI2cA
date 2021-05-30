@@ -207,5 +207,24 @@ uint8_t I2C_ReadNByte(SoftI2cA*base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t l
 	// base->delayus_static(base->i2c_rate);
 	return(status);
 }
+// 这个是专门为了一些不遵守标准IIC的烂东西做的接口 比如AHT10的读温度数据
+uint8_t AhtIicRead(SoftI2cA*base,uint8_t *pBuffer,uint16_t length){
+	// uint8_t status;
 
+	I2C_start(base);
+
+	I2C_SendByte(base,(base->dev_addr<<1) | 0x01);
+
+	while(length != 0x00){
+		*(uint8_t*)pBuffer = I2C_ReceiveByte(base);
+		if(length != 1)	{
+			I2C_ack(base);	
+		}
+
+		(uint8_t*)pBuffer ++;
+		length --;	
+	}
+	I2C_stop(base);
+	return 0;
+}
 
