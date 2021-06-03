@@ -90,6 +90,11 @@ uint8_t I2C_ReadNByte(SoftI2cA * base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t
 
 // 这个是专门为了一些不遵守标准IIC的烂东西做的接口 比如AHT10的读温度数据,传入设备地址，就能得到数据
 uint8_t AhtIicRead(SoftI2cA*base,uint8_t *pBuffer,uint16_t length);
+
+// 这个是专门为了一些不遵守标准IIC的烂东西做的接口 比如HTU21D的读温度数据(非主机保持模式)
+// 是两个一套的
+void Htu21dIicRead_write_devaddr(SoftI2cA*base,uint16_t RegAddr);
+void Htu21dIicRead_read_devaddr(SoftI2cA*base,uint8_t *pBuffer,uint16_t length);
 #endif
 
 

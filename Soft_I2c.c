@@ -208,6 +208,7 @@ uint8_t I2C_ReadNByte(SoftI2cA*base,uint16_t RegAddr,uint8_t *pBuffer,uint16_t l
 	return(status);
 }
 // 这个是专门为了一些不遵守标准IIC的烂东西做的接口 比如AHT10的读温度数据
+// 这个是直接输入设备地址 然后就开始读了
 uint8_t AhtIicRead(SoftI2cA*base,uint8_t *pBuffer,uint16_t length){
 	// uint8_t status;
 
@@ -227,4 +228,33 @@ uint8_t AhtIicRead(SoftI2cA*base,uint8_t *pBuffer,uint16_t length){
 	I2C_stop(base);
 	return 0;
 }
+// 这个是专门为了一些不遵守标准IIC的烂东西做的接口 比如HTU21D的读温度数据(非主机保持模式)
+// 这个需要先写入设备地址和寄存器地址 然后等待一段时间！！再去读数据（标准iic是不等的）
+void Htu21dIicRead_write_devaddr(SoftI2cA*base,uint16_t RegAddr){
+	uint8_t status;
+
+	I2C_start(base);
+
+	I2C_SendByte(base,base->dev_addr<<1);
+	I2C_SendByte(base,RegAddr);
+	// status = I2C_SendAddr(base,RegAddr);
+}
+void Htu21dIicRead_read_devaddr(SoftI2cA*base,uint8_t *pBuffer,uint16_t length){
+	I2C_start(base);
+	
+	I2C_SendByte(base,(base->dev_addr<<1) | 0x01);	
+
+	while(length != 0x00){
+		*(uint8_t*)pBuffer = I2C_ReceiveByte(base);
+		if(length != 1)	{
+			I2C_ack(base);	
+		}
+
+		(uint8_t*)pBuffer ++;
+		length --;	
+	}
+	I2C_stop(base);
+
+}
+
 
